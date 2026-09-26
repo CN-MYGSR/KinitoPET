@@ -133,6 +133,9 @@
 /* ── 错误弹窗（红） ───────────────────────── */
 .errpop{
   position:absolute;z-index:9350;
+  /* 必须显式开启：父级 #sysdialog-host 是 pointer-events:none，
+     漏掉这行会让整个弹窗对真实鼠标点击失效（按钮变成死键）。 */
+  pointer-events:auto;
   background:#f0f0f0;border:2px solid #8b0f16;
   box-shadow:0 0 40px rgba(139,15,22,.55), 0 14px 40px rgba(0,0,0,.6);
   min-width:300px;max-width:440px;border-radius:4px;overflow:hidden;

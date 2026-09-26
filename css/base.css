@@ -181,6 +181,10 @@ input,textarea{font-family:inherit}
   pointer-events:none;
   display:flex;align-items:center;justify-content:center;
 }
+/* 宿主本身不挡操作，但里面的每一个对话框都必须可点。
+   这里用子选择器兜底：以后往宿主里塞新对话框，不会因为
+   忘记写 pointer-events:auto 而变成"点不动的死窗口"。 */
+#sysdialog-host > *{pointer-events:auto}
 .sysdlg{
   pointer-events:auto;
   min-width:340px;max-width:min(560px,86vw);
