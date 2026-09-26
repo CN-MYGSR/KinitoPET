@@ -1,0 +1,204 @@
+/* ══════════════════════════════════════════════
+   horror.css — 故障 / 跳吓 / 血红 / 压迫感
+   ══════════════════════════════════════════════ */
+
+/* ── 全屏故障滤镜 ─────────────────────────── */
+#glitch-overlay{
+  position:absolute;inset:0;pointer-events:none;z-index:9100;
+  mix-blend-mode:screen;opacity:0;
+}
+#glitch-overlay.on{opacity:1}
+
+/* 色差抖动 */
+@keyframes rgbSplit{
+  0%{transform:translate(0);filter:none}
+  20%{transform:translate(-4px,2px);filter:hue-rotate(40deg) saturate(2.4)}
+  40%{transform:translate(5px,-3px);filter:hue-rotate(-60deg) saturate(3)}
+  60%{transform:translate(-3px,-2px);filter:invert(.6) saturate(2)}
+  80%{transform:translate(3px,4px);filter:hue-rotate(120deg)}
+  100%{transform:translate(0);filter:none}
+}
+.fx-rgb{animation:rgbSplit .16s steps(1) infinite}
+
+/* 扫描撕裂 */
+@keyframes tearBand{
+  0%{transform:translateY(-100%)}
+  100%{transform:translateY(120vh)}
+}
+.tear-band{
+  position:absolute;left:0;right:0;height:44px;
+  background:linear-gradient(180deg,
+    rgba(255,255,255,0), rgba(255,255,255,.35), rgba(120,255,220,.25),
+    rgba(255,255,255,.35), rgba(255,255,255,0));
+  mix-blend-mode:overlay;
+  animation:tearBand .9s linear infinite;
+}
+.tear-band.b2{animation-duration:.55s;animation-delay:.2s;height:22px;opacity:.7}
+.tear-band.b3{animation-duration:1.35s;animation-delay:.5s;height:70px;opacity:.45}
+
+/* 屏幕整体抖动 */
+.shake-hard{animation:shakeHard .12s infinite}
+@keyframes shakeHard{
+  0%{transform:translate(0,0) rotate(0)}
+  25%{transform:translate(-5px,3px) rotate(-.35deg)}
+  50%{transform:translate(4px,-4px) rotate(.3deg)}
+  75%{transform:translate(-3px,-2px) rotate(-.2deg)}
+  100%{transform:translate(3px,4px) rotate(.25deg)}
+}
+.shake-soft{animation:shakeSoft .3s infinite}
+@keyframes shakeSoft{
+  0%,100%{transform:translate(0,0)}
+  50%{transform:translate(1.5px,-1.5px)}
+}
+
+/* 红屏脉冲 */
+.redpulse{animation:redPulse .5s ease-in-out infinite}
+@keyframes redPulse{
+  0%,100%{box-shadow:inset 0 0 0 0 rgba(180,0,0,0)}
+  50%{box-shadow:inset 0 0 160px 40px rgba(180,0,0,.55)}
+}
+
+/* 反色闪烁 */
+@keyframes invertFlash{
+  0%,100%{filter:none}
+  50%{filter:invert(1) hue-rotate(180deg)}
+}
+.fx-invert{animation:invertFlash .1s steps(1) infinite}
+
+/* 血色覆盖 */
+.blood-veil{
+  position:absolute;inset:0;z-index:9150;pointer-events:none;
+  background:radial-gradient(ellipse 90% 80% at 50% 50%,
+    rgba(90,0,0,.15) 30%, rgba(120,0,0,.55) 75%, rgba(40,0,0,.9) 100%);
+  opacity:0;transition:opacity .5s;
+}
+.blood-veil.on{opacity:1}
+
+/* ── 跳吓 ─────────────────────────────────── */
+.jumpscare{
+  position:absolute;inset:0;z-index:9700;
+  display:flex;align-items:center;justify-content:center;
+  background:#000;overflow:hidden;
+}
+.jumpscare svg{width:min(110vmin,1200px);height:min(110vmin,1200px);overflow:visible}
+@keyframes jsRush{
+  0%{transform:scale(.35);opacity:0}
+  8%{opacity:1}
+  100%{transform:scale(1.5);opacity:1}
+}
+.js-rush{animation:jsRush .42s cubic-bezier(.2,.9,.3,1) forwards}
+@keyframes jsThrob{
+  0%,100%{transform:scale(1.5) translate(0,0)}
+  20%{transform:scale(1.56) translate(-8px,5px)}
+  40%{transform:scale(1.44) translate(9px,-6px)}
+  60%{transform:scale(1.58) translate(-6px,-7px)}
+  80%{transform:scale(1.48) translate(7px,6px)}
+}
+.js-throb{animation:jsThrob .1s steps(1) infinite}
+.jumpscare .js-flash{
+  position:absolute;inset:0;background:#fff;opacity:0;
+  animation:jsFlash .42s steps(1) forwards;
+}
+@keyframes jsFlash{0%{opacity:1}4%{opacity:0}12%{opacity:.9}16%{opacity:0}100%{opacity:0}}
+
+/* ── 血字 ─────────────────────────────────── */
+.bloodtext{
+  position:absolute;inset:0;z-index:9200;
+  display:flex;align-items:center;justify-content:center;
+  padding:40px;pointer-events:none;
+}
+.bloodtext .bt-inner{
+  font-family:var(--font-fun);font-size:clamp(24px,4.4vmin,56px);
+  color:#8b0f16;text-align:center;line-height:1.35;
+  text-shadow:0 0 14px rgba(139,15,22,.75), 0 3px 0 #4a060a;
+  letter-spacing:.02em;
+  animation:btDrip .35s cubic-bezier(.3,1.3,.4,1);
+}
+@keyframes btDrip{from{transform:scale(1.5);opacity:0}to{transform:none;opacity:1}}
+
+/* ── 黑影剪影 ─────────────────────────────── */
+.silhouette{
+  position:absolute;z-index:9250;pointer-events:none;
+  animation:silFlicker 2.4s steps(1) infinite;
+}
+@keyframes silFlicker{
+  0%,88%,100%{opacity:.92}
+  90%{opacity:.2}
+  92%{opacity:.95}
+  94%{opacity:.1}
+  96%{opacity:.9}
+}
+.silhouette svg{width:100%;height:100%}
+
+/* ── 错误弹窗（红） ───────────────────────── */
+.errpop{
+  position:absolute;z-index:9350;
+  background:#f0f0f0;border:2px solid #8b0f16;
+  box-shadow:0 0 40px rgba(139,15,22,.55), 0 14px 40px rgba(0,0,0,.6);
+  min-width:300px;max-width:440px;border-radius:4px;overflow:hidden;
+}
+.errpop .ep-t{
+  background:linear-gradient(180deg,#b81c24,#7a0f16);color:#fff;
+  padding:8px 12px;font-size:12.5px;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+}
+.errpop .ep-b{padding:18px 20px;font-size:13px;color:#2a1010;line-height:1.65;
+  display:flex;gap:14px;align-items:flex-start}
+.errpop .ep-b .epi{font-size:28px;line-height:1}
+.errpop .ep-f{padding:0 16px 14px;display:flex;justify-content:flex-end}
+.errpop .ep-f button{padding:6px 22px;font-size:12.5px;background:#e8e8e8;
+  border:1px solid #a0a0a0;border-radius:3px}
+
+/* ── 进度压迫条（Kinito 控制度） ───────────── */
+#control-meter{
+  position:absolute;right:14px;top:14px;z-index:9300;
+  width:190px;padding:10px 12px;
+  background:rgba(10,10,14,.86);
+  border:1px solid rgba(255,255,255,.12);border-radius:8px;
+  font-family:var(--font-ui);font-size:10.5px;color:#8a94a0;
+  opacity:0;transition:opacity .5s;
+}
+#control-meter.on{opacity:1}
+#control-meter .cm-t{display:flex;justify-content:space-between;margin-bottom:6px}
+#control-meter .cm-t b{color:#e0a0b8;font-weight:600}
+#control-meter .cm-bar{height:6px;background:#1a1a20;border-radius:3px;overflow:hidden}
+#control-meter .cm-bar > i{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,#3fae3f,#e0c060 55%,#c02020);
+  transition:width .6s;
+}
+#control-meter.high .cm-t b{color:#ff6b6b;animation:blinkHint 1s infinite}
+
+/* ── 真实感 Kinito（卧室/巨化） ───────────── */
+.real-kinito{
+  position:absolute;z-index:9600;pointer-events:none;
+}
+.real-kinito svg{width:100%;height:100%;overflow:visible}
+.real-kinito .rk-jitter{animation:rkJit .08s steps(1) infinite}
+@keyframes rkJit{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(-2px,1px)}
+  50%{transform:translate(2px,-2px)}
+  75%{transform:translate(-1px,-1px)}
+  100%{transform:translate(1px,2px)}
+}
+
+/* ── 桌面被接管：图标乱爬 ─────────────────── */
+.dicon.fleeing{transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
+
+/* ── 光标：无 ─────────────────────────────── */
+body.nocursor,body.nocursor *{cursor:none !important}
+
+/* ── 闪白 ─────────────────────────────────── */
+.whiteout{
+  position:absolute;inset:0;background:#fff;z-index:9800;pointer-events:none;
+  animation:woFade .55s ease-out forwards;
+}
+@keyframes woFade{0%{opacity:1}100%{opacity:0}}
+
+/* ── 卡带/冻结 ────────────────────────────── */
+.frozen{pointer-events:none}
+.freeze-frame{
+  position:absolute;inset:0;z-index:9300;
+  background-size:cover;background-position:center;
+}

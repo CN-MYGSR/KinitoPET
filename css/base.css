@@ -1,0 +1,228 @@
+/* ══════════════════════════════════════════════
+   base.css — 变量 / 重置 / 显示器外壳 / 字体
+   ══════════════════════════════════════════════ */
+
+:root{
+  /* 品牌色 */
+  --kin-pink:        #f9c2dc;
+  --kin-pink-deep:   #eb8fb8;
+  --kin-pink-dark:   #c96b98;
+  --kin-gill:        #e07aa8;
+  --kin-magenta:     #d81b7a;
+  --kin-green:       #4cc06a;
+  --kin-cream:       #fff4f9;
+
+  /* 系统色 */
+  --os-accent:       #0a84d8;
+  --os-accent-dark:  #075b95;
+  --os-face:         #f0f0f0;
+  --os-face-alt:     #e4e4e4;
+  --os-border-light: #ffffff;
+  --os-border-dark:  #9a9a9a;
+  --os-border-deep:  #5c5c5c;
+  --os-title:        linear-gradient(180deg,#3d8ee0,#1f66bd);
+  --os-title-inact:  linear-gradient(180deg,#c8cdd4,#a8aeb6);
+  --os-text:         #16181c;
+  --os-taskbar:      #1c1c1c;
+
+  /* 恐怖色 */
+  --blood:           #8b0f16;
+  --void:            #050506;
+
+  --font-os: "Tahoma","Segoe UI",Verdana,"Microsoft YaHei",sans-serif;
+  --font-ui: "Segoe UI","Microsoft YaHei",Tahoma,sans-serif;
+  --font-mono: "Consolas","Courier New",monospace;
+  --font-fun: "Comic Sans MS","Segoe Print","Chalkboard SE","Microsoft YaHei",cursive;
+
+  --shadow-win: 0 8px 32px rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;padding:0;height:100%;width:100%;
+  overflow:hidden;background:#000;
+  font-family:var(--font-ui);
+  color:#111;
+  user-select:none;
+}
+body{cursor:default}
+
+.hidden{display:none !important}
+.invisible{visibility:hidden !important}
+
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+input,textarea{font-family:inherit}
+
+/* ── 显示器外壳 ───────────────────────────── */
+#monitor{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#0a0a0c;
+}
+#screen{
+  position:relative;
+  width:100%;height:100%;
+  overflow:hidden;
+  background:#000;
+  contain:strict;
+}
+.layer{
+  position:absolute;inset:0;
+  overflow:hidden;
+}
+
+/* ── 通用窗口（假 OS 风格） ───────────────── */
+.win{
+  position:absolute;
+  background:var(--os-face);
+  border:1px solid var(--os-border-deep);
+  box-shadow:var(--shadow-win);
+  display:flex;flex-direction:column;
+  min-width:220px;min-height:120px;
+  border-radius:6px 6px 0 0;
+  overflow:hidden;
+}
+.win.small-radius{border-radius:6px}
+.win-titlebar{
+  height:30px;flex:0 0 30px;
+  background:var(--os-title);
+  color:#fff;
+  display:flex;align-items:center;
+  padding:0 4px 0 9px;
+  font-size:12.5px;font-weight:600;
+  letter-spacing:.2px;
+  cursor:grab;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);
+}
+.win.inactive .win-titlebar{background:var(--os-title-inact);color:#4a4f56;text-shadow:none}
+.win-titlebar .wt-icon{
+  width:16px;height:16px;margin-right:7px;flex:0 0 16px;
+  display:flex;align-items:center;justify-content:center;
+}
+.win-titlebar .wt-icon svg{width:16px;height:16px}
+.win-titlebar .wt-text{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.win-btns{display:flex;gap:2px}
+.win-btns button{
+  width:32px;height:24px;border:none;
+  background:transparent;color:#fff;
+  font-size:12px;line-height:1;border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+}
+.win.inactive .win-btns button{color:#4a4f56}
+.win-btns button:hover{background:rgba(255,255,255,.25)}
+.win-btns button.wb-close:hover{background:#e0453b}
+.win-body{
+  flex:1;overflow:auto;position:relative;
+  background:#fff;
+}
+.win-resize{
+  position:absolute;right:0;bottom:0;width:16px;height:16px;
+  cursor:nwse-resize;z-index:5;
+}
+.win-resize::after{
+  content:"";position:absolute;right:3px;bottom:3px;
+  width:9px;height:9px;
+  border-right:2px solid #9a9a9a;border-bottom:2px solid #9a9a9a;
+}
+
+/* 滚动条 */
+.win-body::-webkit-scrollbar,.scroll::-webkit-scrollbar{width:15px;height:15px}
+.win-body::-webkit-scrollbar-track,.scroll::-webkit-scrollbar-track{background:#f0f0f0;border-left:1px solid #d0d0d0}
+.win-body::-webkit-scrollbar-thumb,.scroll::-webkit-scrollbar-thumb{
+  background:#cdcdcd;border:1px solid #a8a8a8;border-radius:2px;
+}
+.win-body::-webkit-scrollbar-thumb:hover{background:#b8b8b8}
+
+/* 通用按钮 */
+.btn{
+  padding:5px 14px;font-size:12.5px;
+  background:linear-gradient(180deg,#fdfdfd,#e8e8e8);
+  border:1px solid #a0a0a0;border-radius:3px;
+  color:#111;
+}
+.btn:hover{background:linear-gradient(180deg,#fff,#f2f2f2);border-color:var(--os-accent)}
+.btn:active{background:#e0e0e0}
+.btn.primary{
+  background:linear-gradient(180deg,#4ba3e8,#1f7fd0);
+  border-color:#1668b0;color:#fff;font-weight:600;
+}
+.btn.primary:hover{background:linear-gradient(180deg,#5cb0f0,#2b8ade)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* 通用表单 */
+.inp{
+  padding:5px 8px;font-size:12.5px;
+  border:1px solid #a8a8a8;border-radius:2px;background:#fff;
+  color:#111;outline:none;
+}
+.inp:focus{border-color:var(--os-accent);box-shadow:0 0 0 2px rgba(10,132,216,.18)}
+
+/* ── 屏幕后处理 ───────────────────────────── */
+#scanlines{
+  position:absolute;inset:0;pointer-events:none;z-index:9000;
+  background:repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,.10) 0px,
+    rgba(0,0,0,.10) 1px,
+    rgba(0,0,0,0) 1px,
+    rgba(0,0,0,0) 3px
+  );
+  mix-blend-mode:multiply;opacity:.55;
+}
+#vignette{
+  position:absolute;inset:0;pointer-events:none;z-index:9001;
+  background:radial-gradient(ellipse 92% 88% at 50% 50%,
+    rgba(0,0,0,0) 55%, rgba(0,0,0,.30) 88%, rgba(0,0,0,.62) 100%);
+}
+
+/* ── 系统对话框 ───────────────────────────── */
+#sysdialog-host{
+  position:absolute;inset:0;z-index:9500;
+  pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+}
+.sysdlg{
+  pointer-events:auto;
+  min-width:340px;max-width:min(560px,86vw);
+  background:var(--os-face);
+  border:1px solid var(--os-border-deep);
+  box-shadow:0 16px 60px rgba(0,0,0,.6);
+  border-radius:6px;overflow:hidden;
+  animation:dlgPop .16s ease-out;
+}
+@keyframes dlgPop{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
+.sysdlg-title{
+  height:30px;background:var(--os-title);color:#fff;
+  display:flex;align-items:center;padding:0 10px;
+  font-size:12.5px;font-weight:600;
+}
+.sysdlg-body{
+  padding:18px 20px;font-size:13px;line-height:1.65;color:#16181c;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.sysdlg-body .dlg-ico{flex:0 0 34px;height:34px}
+.sysdlg-body .dlg-msg{flex:1;white-space:pre-wrap;word-break:break-word}
+.sysdlg-foot{
+  padding:10px 16px 14px;display:flex;justify-content:flex-end;gap:8px;
+  background:var(--os-face);
+}
+.sysdlg input.inp{width:100%;margin-top:10px}
+
+/* ── 提示气泡 ─────────────────────────────── */
+.toast-host{
+  position:absolute;right:14px;bottom:52px;z-index:9400;
+  display:flex;flex-direction:column;gap:8px;align-items:flex-end;
+  pointer-events:none;
+}
+.toast{
+  pointer-events:auto;
+  background:rgba(28,30,36,.96);color:#fff;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:8px;padding:10px 14px;font-size:12.5px;
+  max-width:320px;box-shadow:0 8px 26px rgba(0,0,0,.5);
+  animation:toastIn .22s cubic-bezier(.2,1.2,.4,1);
+}
+.toast .tt{font-weight:700;margin-bottom:3px;font-size:12px;color:#8fd0ff}
+.toast.warn .tt{color:#ffcf6b}
+.toast.danger .tt{color:#ff8080}
+@keyframes toastIn{from{transform:translateX(30px);opacity:0}to{transform:none;opacity:1}}

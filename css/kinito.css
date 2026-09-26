@@ -1,0 +1,156 @@
+/* ══════════════════════════════════════════════
+   kinito.css — Kinito 角色 / 对话气泡 / 桌面宠物层
+   ══════════════════════════════════════════════ */
+
+#kinito-pet-layer{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:400;
+}
+#kinito-pet-layer > *{pointer-events:auto}
+
+/* ── 角色容器 ─────────────────────────────── */
+.kinito{
+  position:absolute;
+  width:var(--kw,175px);
+  transform-origin:50% 100%;
+  will-change:transform;
+  pointer-events:none;
+}
+.kinito svg{width:100%;height:auto;display:block;overflow:visible}
+.kinito.grabbable{cursor:grab;pointer-events:auto}
+.kinito.grabbable:active{cursor:grabbing}
+
+/* 悬浮呼吸 */
+.kinito .k-bob{animation:kBreathe 3.1s ease-in-out infinite;transform-origin:50% 60%}
+@keyframes kBreathe{
+  0%,100%{transform:translateY(0) scaleY(1)}
+  50%{transform:translateY(-5px) scaleY(1.022)}
+}
+/* 眨眼 */
+.kinito .k-eyelid{
+  transform-origin:center;
+  transform:scaleY(0);
+  transition:transform .07s linear;
+}
+.kinito.blink .k-eyelid{transform:scaleY(1)}
+.kinito.blink .k-pupil{opacity:0}
+/* 走路摆动 */
+.kinito.walking .k-bob{animation:kStep .42s ease-in-out infinite}
+@keyframes kStep{
+  0%,100%{transform:translateY(0) rotate(-2.5deg)}
+  50%{transform:translateY(-7px) rotate(2.5deg)}
+}
+.kinito.walking .k-leg-l{animation:kLegL .42s ease-in-out infinite;transform-origin:top center}
+.kinito.walking .k-leg-r{animation:kLegR .42s ease-in-out infinite;transform-origin:top center}
+@keyframes kLegL{0%,100%{transform:rotate(13deg)}50%{transform:rotate(-13deg)}}
+@keyframes kLegR{0%,100%{transform:rotate(-13deg)}50%{transform:rotate(13deg)}}
+
+/* 生气 / 逼近 */
+.kinito.angry .k-head{animation:kShake .12s infinite}
+@keyframes kShake{
+  0%{transform:translate(0,0)}25%{transform:translate(-2px,1px)}
+  50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,-2px)}
+  100%{transform:translate(1px,2px)}
+}
+.kinito.angry .k-eye-glow{opacity:1}
+
+/* 故障态 */
+.kinito.glitching svg{animation:kGlitch .1s infinite}
+@keyframes kGlitch{
+  0%{filter:none;transform:translate(0)}
+  33%{filter:hue-rotate(90deg) saturate(3);transform:translate(-4px,2px)}
+  66%{filter:invert(1);transform:translate(3px,-3px)}
+  100%{filter:none;transform:translate(0)}
+}
+
+/* 巨化逼近 */
+.kinito.towering{transition:width .9s cubic-bezier(.4,0,.6,1), transform .9s cubic-bezier(.4,0,.6,1)}
+
+/* ── 对话气泡 ─────────────────────────────── */
+.kspeech{
+  position:absolute;
+  min-width:180px;max-width:400px;
+  background:#fff;
+  border:3px solid #f2a8ca;
+  border-radius:18px;
+  padding:13px 17px 14px;
+  font-family:var(--font-fun);
+  font-size:14.5px;line-height:1.55;color:#2a1c24;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  pointer-events:auto;
+  animation:ksPop .22s cubic-bezier(.2,1.4,.4,1);
+  z-index:410;
+}
+@keyframes ksPop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.kspeech::after{
+  content:"";position:absolute;
+  bottom:-15px;left:34px;
+  width:0;height:0;
+  border:9px solid transparent;
+  border-top-color:#f2a8ca;
+  border-bottom:0;
+}
+.kspeech::before{
+  content:"";position:absolute;
+  bottom:-9px;left:37px;z-index:1;
+  width:0;height:0;
+  border:6px solid transparent;
+  border-top-color:#fff;border-bottom:0;
+}
+.kspeech.arrow-right::after{left:auto;right:34px}
+.kspeech.arrow-right::before{left:auto;right:37px}
+.kspeech .ks-name{
+  font-size:11px;font-weight:700;color:var(--kin-magenta);
+  letter-spacing:.05em;margin-bottom:5px;font-family:var(--font-ui);
+  text-transform:uppercase;
+}
+.kspeech .ks-text{white-space:pre-wrap}
+.kspeech .ks-next{
+  display:inline-block;margin-top:9px;
+  font-family:var(--font-ui);font-size:11px;color:#b06a90;
+  animation:blinkHint 1s steps(2,start) infinite;
+}
+/* 恐怖态气泡 */
+.kspeech.dark{
+  background:#0b0b0e;border-color:#5c0f14;color:#e8d8d8;
+  font-family:var(--font-ui);
+  box-shadow:0 0 40px rgba(160,20,30,.5);
+}
+.kspeech.dark::after{border-top-color:#5c0f14}
+.kspeech.dark::before{border-top-color:#0b0b0e}
+.kspeech.dark .ks-name{color:#ff6b6b}
+
+/* ── 玩家回答输入 ─────────────────────────── */
+.kask{
+  display:flex;gap:7px;margin-top:11px;align-items:center;
+}
+.kask input{
+  flex:1;padding:7px 11px;font-size:13.5px;
+  font-family:var(--font-ui);
+  border:2px solid #f2a8ca;border-radius:10px;outline:none;
+  background:#fff8fc;color:#2a1c24;
+}
+.kask input:focus{border-color:var(--kin-magenta);background:#fff}
+.kask button{
+  padding:7px 15px;font-size:12.5px;font-weight:600;
+  background:var(--kin-magenta);color:#fff;border:none;border-radius:10px;
+}
+.kask button:hover{background:#b81667}
+.kchoice{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.kchoice button{
+  padding:7px 17px;font-size:13px;font-weight:600;
+  background:#fff;color:var(--kin-magenta);
+  border:2px solid #f2a8ca;border-radius:10px;
+}
+.kchoice button:hover{background:#ffe9f4;border-color:var(--kin-magenta)}
+
+/* ── 独眼黑影（The Eye） ──────────────────── */
+.darkone{
+  position:absolute;z-index:8800;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.darkone svg{width:100%;height:100%;overflow:visible}
+.darkone .do-eye{animation:doEye 2.6s ease-in-out infinite}
+@keyframes doEye{0%,100%{opacity:.75;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.darkone .do-eye{transform-origin:center;transform-box:fill-box}

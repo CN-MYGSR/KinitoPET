@@ -1,0 +1,223 @@
+/* ══════════════════════════════════════════════
+   os.css — 假操作系统桌面 / 任务栏 / 图标 / 开始菜单
+   ══════════════════════════════════════════════ */
+
+#os-layer{z-index:100}
+
+#wallpaper{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 120% 90% at 18% 8%, #2b6ba8 0%, #123a63 38%, #0a1f36 70%, #061423 100%);
+  transition:filter .6s, opacity .6s;
+}
+#wallpaper::after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 78% 22%, rgba(255,255,255,.06), rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 30% 82%, rgba(90,180,255,.07), rgba(0,0,0,0) 46%);
+}
+/* 壁纸变体 */
+#wallpaper.wp-red{
+  background:radial-gradient(ellipse 120% 90% at 18% 8%, #7a1414 0%, #4a0c0c 40%, #240505 75%, #120202 100%);
+}
+#wallpaper.wp-gray{filter:grayscale(1) brightness(.7)}
+#wallpaper.wp-void{background:#000}
+#wallpaper.wp-kinito{
+  background:
+    radial-gradient(ellipse 110% 80% at 50% 30%, #f7bcd8 0%, #e07aa8 45%, #a3437a 78%, #5e2148 100%);
+}
+
+/* ── 桌面图标 ─────────────────────────────── */
+#desktop-icons{
+  position:absolute;top:12px;left:12px;
+  display:flex;flex-direction:column;flex-wrap:wrap;
+  gap:2px;max-height:calc(100% - 80px);
+  align-content:flex-start;
+}
+.dicon{
+  width:96px;padding:8px 4px 7px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  border-radius:4px;cursor:pointer;
+  border:1px solid transparent;
+  transition:background .12s;
+}
+.dicon:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18)}
+.dicon.selected{background:rgba(120,190,255,.32);border-color:rgba(180,220,255,.6)}
+.dicon .di-img{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  filter:drop-shadow(0 3px 5px rgba(0,0,0,.5));
+}
+.dicon .di-img svg{width:44px;height:44px}
+.dicon .di-label{
+  font-size:11.5px;color:#fff;text-align:center;line-height:1.25;
+  text-shadow:0 1px 3px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.9);
+  word-break:break-word;max-width:92px;
+}
+.dicon.bad .di-label{color:#ff9d9d}
+
+/* 桌面宠物蛋 */
+#desktop-icons .dicon.egg{
+  animation:eggWobble 3.4s ease-in-out infinite;
+}
+@keyframes eggWobble{
+  0%,86%,100%{transform:rotate(0)}
+  89%{transform:rotate(-7deg)}
+  92%{transform:rotate(6deg)}
+  95%{transform:rotate(-3deg)}
+}
+.dicon.egg.hatching{animation:eggHatch .5s ease-in forwards}
+@keyframes eggHatch{
+  0%{transform:scale(1) rotate(0)}
+  35%{transform:scale(1.18) rotate(-12deg)}
+  60%{transform:scale(.86) rotate(14deg)}
+  100%{transform:scale(.2) rotate(60deg);opacity:0}
+}
+
+/* ── 任务栏 ───────────────────────────────── */
+#taskbar{
+  position:absolute;left:0;right:0;bottom:0;height:40px;
+  background:rgba(20,22,26,.93);
+  backdrop-filter:blur(14px);
+  display:flex;align-items:center;
+  padding:0 6px;gap:5px;
+  z-index:500;
+  border-top:1px solid rgba(255,255,255,.09);
+}
+#start-btn{
+  height:32px;padding:0 13px 0 10px;
+  display:flex;align-items:center;gap:8px;
+  background:transparent;border:none;color:#fff;
+  font-size:12.5px;border-radius:4px;
+}
+#start-btn:hover{background:rgba(255,255,255,.13)}
+#start-btn .start-glyph{
+  width:17px;height:17px;flex:0 0 17px;
+  background:
+    linear-gradient(90deg,#f9c2dc 0 46%,#e07aa8 46% 100%);
+  clip-path:polygon(0 0,46% 0,46% 46%,0 46%,0 100%,46% 100%,46% 54%,100% 54%,100% 100%,54% 100%,54% 0,100% 0,100% 46%,0 46%);
+  opacity:0;
+}
+/* 用真实的四宫格 logo */
+#start-btn .start-glyph{
+  opacity:1;
+  background:conic-gradient(from 0deg at 50% 50%,
+    #f9c2dc 0deg 90deg, #e07aa8 90deg 180deg,
+    #f9c2dc 180deg 270deg, #e07aa8 270deg 360deg);
+  clip-path:none;
+  border-radius:3px;
+  box-shadow:inset 0 0 0 2px rgba(0,0,0,.35);
+}
+#taskbar-tasks{
+  flex:1;display:flex;align-items:center;gap:4px;
+  overflow:hidden;height:100%;padding:4px 0;
+}
+.tbtask{
+  height:32px;min-width:44px;max-width:190px;
+  display:flex;align-items:center;gap:7px;
+  padding:0 11px;border-radius:4px;
+  background:rgba(255,255,255,.07);
+  border-bottom:2px solid transparent;
+  color:#e8e8ee;font-size:12px;cursor:pointer;
+  white-space:nowrap;overflow:hidden;
+}
+.tbtask:hover{background:rgba(255,255,255,.15)}
+.tbtask.active{background:rgba(255,255,255,.2);border-bottom-color:#7ec8ff}
+.tbtask .tbi{width:16px;height:16px;flex:0 0 16px}
+.tbtask .tbi svg{width:16px;height:16px}
+.tbtask .tbl{overflow:hidden;text-overflow:ellipsis}
+.tbtask.min{opacity:.6}
+.tbtask.alert{animation:tbAlert 1s ease-in-out infinite}
+@keyframes tbAlert{0%,100%{background:rgba(255,120,120,.28)}50%{background:rgba(255,120,120,.6)}}
+
+#tray{
+  display:flex;align-items:center;gap:10px;
+  padding:0 10px;color:#d8dde4;font-size:12px;
+  border-left:1px solid rgba(255,255,255,.1);height:26px;
+}
+#tray-clock{font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.tray-ico{width:16px;height:16px;opacity:.8}
+
+/* ── 开始菜单 ─────────────────────────────── */
+#start-menu{
+  position:absolute;left:6px;bottom:46px;
+  width:300px;
+  background:rgba(26,28,33,.97);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:8px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.7);
+  z-index:600;
+  animation:smIn .16s cubic-bezier(.2,1.2,.4,1);
+}
+@keyframes smIn{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+.sm-head{
+  padding:14px 16px 12px;border-bottom:1px solid rgba(255,255,255,.09);
+  display:flex;align-items:center;gap:11px;
+}
+.sm-head .sm-av{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(140deg,#7ec8ff,#2f7fd0);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;color:#04203a;font-size:15px;
+}
+.sm-head .sm-name{color:#fff;font-size:13px;font-weight:600}
+.sm-head .sm-sub{color:#8b98a8;font-size:11px;margin-top:2px}
+.sm-list{padding:6px}
+.sm-item{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 11px;border-radius:5px;
+  color:#dfe4ea;font-size:12.5px;cursor:pointer;
+}
+.sm-item:hover{background:rgba(255,255,255,.12)}
+.sm-item .smi{width:20px;height:20px;flex:0 0 20px}
+.sm-item .smi svg{width:20px;height:20px}
+.sm-sep{height:1px;background:rgba(255,255,255,.09);margin:5px 10px}
+.sm-item.danger{color:#ff9d9d}
+.sm-item.danger:hover{background:rgba(255,90,90,.18)}
+
+/* ── 右键菜单 ─────────────────────────────── */
+.ctxmenu{
+  position:absolute;z-index:9200;
+  min-width:190px;
+  background:#f4f4f4;
+  border:1px solid #b0b0b0;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  padding:3px;border-radius:4px;
+  animation:dlgPop .1s ease-out;
+}
+.ctxmenu .ci{
+  padding:7px 14px;font-size:12.5px;border-radius:3px;cursor:pointer;
+  display:flex;align-items:center;gap:9px;color:#16181c;
+}
+.ctxmenu .ci:hover{background:var(--os-accent);color:#fff}
+.ctxmenu .ci.disabled{opacity:.42;pointer-events:none}
+.ctxmenu .csep{height:1px;background:#dcdcdc;margin:3px 6px}
+
+/* ── 屏幕被"接管"时 ───────────────────────── */
+#os-layer.taken-over{animation:takeoverShake .18s infinite}
+@keyframes takeoverShake{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(-2px,1px)}
+  50%{transform:translate(1px,-2px)}
+  75%{transform:translate(2px,2px)}
+  100%{transform:translate(-1px,-1px)}
+}
+
+/* ── 桌面通知横幅 ─────────────────────────── */
+.osbanner{
+  position:absolute;right:16px;bottom:54px;width:330px;
+  background:rgba(28,30,36,.97);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;padding:14px 16px;
+  box-shadow:0 14px 44px rgba(0,0,0,.6);
+  color:#e9edf2;z-index:9300;
+  animation:toastIn .3s cubic-bezier(.2,1.2,.4,1);
+}
+.osbanner .ob-t{font-size:12px;font-weight:700;color:#8fd0ff;margin-bottom:6px;
+  display:flex;align-items:center;gap:7px}
+.osbanner .ob-m{font-size:12.5px;line-height:1.6;color:#cdd5de}
+.osbanner .ob-close{
+  position:absolute;right:9px;top:8px;background:none;border:none;
+  color:#7c8794;font-size:15px;line-height:1;padding:3px 6px;border-radius:3px;
+}
+.osbanner .ob-close:hover{background:rgba(255,255,255,.12);color:#fff}

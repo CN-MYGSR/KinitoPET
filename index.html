@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>KinitoPET</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><ellipse cx='16' cy='16' rx='11' ry='12' fill='%23f7bcd8'/><circle cx='11.5' cy='15' r='2.6' fill='%23111'/><circle cx='20.5' cy='15' r='2.6' fill='%23111'/></svg>">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/crt.css">
+<link rel="stylesheet" href="css/os.css">
+<link rel="stylesheet" href="css/kinito.css">
+<link rel="stylesheet" href="css/apps.css">
+<link rel="stylesheet" href="css/games.css">
+<link rel="stylesheet" href="css/horror.css">
+</head>
+<body>
+
+<!-- ══════════════ 显示器外壳 ══════════════ -->
+<div id="monitor">
+  <div id="screen">
+
+    <!-- 开机 / CRT 层 -->
+    <div id="boot-layer" class="layer"></div>
+
+    <!-- 假操作系统 -->
+    <div id="os-layer" class="layer hidden">
+      <div id="wallpaper"></div>
+      <div id="desktop-icons"></div>
+      <div id="window-host"></div>
+      <div id="kinito-pet-layer"></div>
+      <div id="taskbar">
+        <button id="start-btn"><span class="start-glyph"></span><span>Start</span></button>
+        <div id="taskbar-tasks"></div>
+        <div id="tray">
+          <span id="tray-clock">--:--</span>
+        </div>
+      </div>
+      <div id="start-menu" class="hidden"></div>
+    </div>
+
+    <!-- 全屏演出层（3D / 广告 / 结局 / 跳吓） -->
+    <div id="stage-layer" class="layer hidden"></div>
+
+    <!-- 蓝屏 -->
+    <div id="bsod-layer" class="layer hidden"></div>
+
+    <!-- 全局故障滤镜 -->
+    <div id="glitch-overlay" class="hidden"></div>
+    <div id="scanlines"></div>
+    <div id="vignette"></div>
+
+    <!-- 系统级对话框 / 提示 -->
+    <div id="sysdialog-host"></div>
+
+  </div>
+</div>
+
+<!-- 素材仓库（程序化生成，全部内联 SVG） -->
+<div id="svg-defs" aria-hidden="true"></div>
+
+<script src="js/00-core.js"></script>
+<script src="js/00b-svg.js"></script>
+<script src="js/01-audio.js"></script>
+<script src="js/02-crt.js"></script>
+<script src="js/03-wm.js"></script>
+<script src="js/04-desktop.js"></script>
+<script src="js/05-kinito.js"></script>
+<script src="js/06-app-browser.js"></script>
+<script src="js/07-apps-misc.js"></script>
+<script src="js/08-games.js"></script>
+<script src="js/09-raycast.js"></script>
+<script src="js/10-levels.js"></script>
+<script src="js/11-script.js"></script>
+<script src="js/12-director.js"></script>
+<script src="js/13-main.js"></script>
+</body>
+</html>

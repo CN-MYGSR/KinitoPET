@@ -1,0 +1,271 @@
+/* ══════════════════════════════════════════════
+   games.css — Ready Repair! / Factory Frenzy! / 分析中心 / 3D 舞台
+   ══════════════════════════════════════════════ */
+
+/* ══════════════ Ready Repair! ══════════════ */
+.rr-wrap{
+  display:flex;flex-direction:column;height:100%;
+  background:linear-gradient(180deg,#ffeaf4,#fdd6e8);
+  font-family:var(--font-fun);
+}
+.rr-top{
+  padding:10px 16px;background:linear-gradient(180deg,#e0218a,#a8145f);
+  color:#fff;display:flex;align-items:center;gap:14px;
+  font-size:14px;text-shadow:0 1px 0 #7a0f45;
+}
+.rr-top .rrt-title{font-weight:700;font-size:16px}
+.rr-top .rrt-step{
+  margin-left:auto;font-family:var(--font-ui);font-size:11.5px;
+  background:rgba(255,255,255,.2);padding:4px 12px;border-radius:11px;
+  text-shadow:none;
+}
+.rr-tools{
+  display:flex;gap:8px;padding:9px 14px;background:rgba(255,255,255,.6);
+  align-items:center;flex-wrap:wrap;
+}
+.rr-tool{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:7px 13px;border-radius:11px;border:2px solid #f2a8ca;background:#fff;
+  font-size:10.5px;font-family:var(--font-ui);color:#a8145f;cursor:pointer;
+}
+.rr-tool .rti{font-size:22px;line-height:1}
+.rr-tool:hover{background:#fff0f7}
+.rr-tool.active{background:#ffe0ef;border-color:var(--kin-magenta);font-weight:700;
+  box-shadow:0 3px 10px rgba(216,27,122,.22)}
+.rr-tool.locked{opacity:.4;pointer-events:none;filter:grayscale(1)}
+.rr-stage{
+  flex:1;position:relative;overflow:hidden;
+  background:#f6e2d0;
+}
+.rr-stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.rr-hud{
+  position:absolute;left:0;right:0;bottom:0;padding:9px 16px;
+  background:rgba(60,20,40,.82);color:#ffd9ec;
+  font-family:var(--font-ui);font-size:12.5px;
+  display:flex;align-items:center;gap:16px;
+}
+.rr-prog{flex:1;height:9px;background:rgba(255,255,255,.18);border-radius:5px;overflow:hidden}
+.rr-prog > i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f2a8ca,#fff);
+  transition:width .3s}
+.rr-next{
+  padding:6px 18px;border-radius:9px;border:none;
+  background:linear-gradient(180deg,#7fe07f,#3fae3f);color:#fff;
+  font-family:var(--font-ui);font-size:12.5px;font-weight:700;
+  box-shadow:0 3px 0 #256b25;
+}
+.rr-next:disabled{opacity:.4;box-shadow:none}
+.rr-next:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #256b25}
+
+/* ══════════════ Factory Frenzy! ══════════════ */
+.ff-wrap{
+  display:flex;flex-direction:column;height:100%;
+  background:linear-gradient(180deg,#dff0ff,#c2e2fa);
+  font-family:var(--font-fun);
+}
+.ff-top{
+  padding:10px 16px;background:linear-gradient(180deg,#2f8fd8,#1565a8);
+  color:#fff;display:flex;align-items:center;gap:14px;font-size:14px;
+}
+.ff-stage{flex:1;position:relative;overflow:hidden;background:#eaf5ff}
+.ff-stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.ff-hud{
+  position:absolute;left:0;right:0;bottom:0;padding:9px 16px;
+  background:rgba(10,40,70,.82);color:#cfe9ff;
+  font-family:var(--font-ui);font-size:12.5px;
+  display:flex;align-items:center;gap:16px;
+}
+
+/* ══════════════ Best Friends Analysis Hub ══════════════ */
+.bf-wrap{
+  display:flex;flex-direction:column;height:100%;
+  background:#f4f7fb;font-family:var(--font-ui);
+}
+.bf-top{
+  padding:11px 18px;background:linear-gradient(180deg,#6a4fd8,#4a2fb0);
+  color:#fff;font-size:14px;font-weight:600;
+  display:flex;align-items:center;gap:12px;
+}
+.bf-top .bft-badge{
+  font-size:10.5px;background:rgba(255,255,255,.2);
+  padding:3px 10px;border-radius:9px;font-weight:400;
+}
+.bf-body{
+  flex:1;padding:26px 30px;overflow:auto;
+  display:flex;flex-direction:column;gap:18px;
+}
+.bf-q{
+  font-size:16.5px;color:#1c2030;line-height:1.55;font-weight:600;
+}
+.bf-sub{font-size:12.5px;color:#6a7280;margin-top:-10px}
+.bf-choices{display:flex;gap:11px;flex-wrap:wrap}
+.bf-choice{
+  padding:10px 26px;font-size:14px;border-radius:9px;
+  border:2px solid #b8c2d8;background:#fff;color:#2a3244;font-weight:600;
+}
+.bf-choice:hover{background:#eef3ff;border-color:#6a4fd8}
+.bf-choice.yes{color:#1c8a3c;border-color:#9ad8a8}
+.bf-choice.yes:hover{background:#effbf2;border-color:#1c8a3c}
+.bf-choice.no{color:#b02020;border-color:#e8b0b0}
+.bf-choice.no:hover{background:#fff1f1;border-color:#b02020}
+.bf-input-row{display:flex;gap:9px;max-width:480px}
+.bf-input-row input{flex:1;padding:10px 13px;font-size:14px;border:2px solid #b8c2d8;
+  border-radius:9px;outline:none;color:#1c2030}
+.bf-input-row input:focus{border-color:#6a4fd8}
+.bf-input-row button{
+  padding:10px 22px;font-size:13.5px;font-weight:600;border:none;border-radius:9px;
+  background:#6a4fd8;color:#fff;
+}
+.bf-progress{height:5px;background:#e0e6f0;border-radius:3px;overflow:hidden}
+.bf-progress > i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6a4fd8,#a08ff0);
+  transition:width .35s}
+/* 恐怖态 */
+.bf-wrap.dark{background:#0a0a0d}
+.bf-wrap.dark .bf-q{color:#e8dcdc}
+.bf-wrap.dark .bf-sub{color:#8a7a7a}
+.bf-wrap.dark .bf-top{background:linear-gradient(180deg,#7a0f16,#3d0508)}
+.bf-wrap.dark .bf-choice{background:#141418;color:#d8cccc;border-color:#5c2020}
+.bf-wrap.dark .bf-choice:hover{background:#241014;border-color:#a03030}
+.bf-wrap.dark .bf-input-row input{background:#141418;color:#e0d0d0;border-color:#5c2020}
+.bf-wrap.dark .bf-progress{background:#241014}
+.bf-wrap.dark .bf-progress > i{background:linear-gradient(90deg,#7a0f16,#d04040)}
+
+/* ══════════════ 3D 舞台（全屏） ══════════════ */
+#stage-layer{z-index:300;background:#000}
+.stage3d{
+  position:absolute;inset:0;overflow:hidden;background:#000;cursor:none;
+}
+.stage3d canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
+.stage3d .s3d-cross{
+  position:absolute;left:50%;top:50%;width:22px;height:22px;
+  transform:translate(-50%,-50%);pointer-events:none;z-index:10;
+  opacity:.75;
+}
+.stage3d .s3d-cross::before,.stage3d .s3d-cross::after{
+  content:"";position:absolute;background:#fff;mix-blend-mode:difference;
+}
+.stage3d .s3d-cross::before{left:50%;top:0;width:2px;height:100%;transform:translateX(-50%)}
+.stage3d .s3d-cross::after{top:50%;left:0;height:2px;width:100%;transform:translateY(-50%)}
+.s3d-hint{
+  position:absolute;left:50%;bottom:46px;transform:translateX(-50%);
+  background:rgba(0,0,0,.7);color:#e8e8ee;padding:9px 20px;border-radius:8px;
+  font-size:12.5px;font-family:var(--font-ui);z-index:20;
+  border:1px solid rgba(255,255,255,.16);
+  animation:blinkHint 1.6s ease-in-out infinite;
+}
+.s3d-title{
+  position:absolute;left:0;right:0;top:36px;text-align:center;
+  font-family:var(--font-fun);font-size:clamp(22px,3.4vmin,38px);
+  color:#fff;text-shadow:0 3px 14px rgba(0,0,0,.8);
+  z-index:20;pointer-events:none;
+}
+.s3d-sub{
+  position:absolute;left:0;right:0;top:calc(36px + 3.4vmin + 12px);text-align:center;
+  font-family:var(--font-ui);font-size:13px;color:rgba(255,255,255,.75);
+  z-index:20;pointer-events:none;
+}
+.s3d-vignette{
+  position:absolute;inset:0;pointer-events:none;z-index:15;
+  background:radial-gradient(ellipse 62% 58% at 50% 50%,
+    rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 78%, rgba(0,0,0,.95) 100%);
+}
+/* 黑暗中的光晕（手电/灯） */
+.s3d-lamp{
+  position:absolute;inset:0;pointer-events:none;z-index:14;
+  background:radial-gradient(circle 240px at 50% 50%, rgba(255,220,150,.16), rgba(0,0,0,0) 70%);
+}
+/* 过场黑幕 */
+.s3d-fade{
+  position:absolute;inset:0;background:#000;z-index:30;pointer-events:none;
+  opacity:0;transition:opacity .8s;
+}
+.s3d-fade.on{opacity:1}
+.s3d-fade.instant{transition:opacity .12s}
+
+/* ══════════════ 时钟（捉迷藏） ══════════════ */
+.clockface{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:#000;z-index:40;
+}
+.clockface svg{width:min(46vmin,340px);height:min(46vmin,340px)}
+.clockface .cf-digit{
+  font-family:var(--font-mono);font-size:min(12vmin,92px);color:#e8e8ee;
+  position:absolute;bottom:16%;
+}
+.seek-text{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:20px;
+  background:#000;z-index:41;text-align:center;padding:30px;
+}
+.seek-text .st-line{
+  font-family:var(--font-mono);font-size:clamp(17px,2.8vmin,32px);
+  color:#d8d8d8;letter-spacing:.05em;
+}
+.seek-text .st-line.hot{color:#c02020;font-weight:700}
+
+/* ══════════════ 结局卡 ══════════════ */
+.endcard{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:22px;
+  background:#000;z-index:50;text-align:center;padding:40px;
+}
+.endcard .ec-t{
+  font-family:var(--font-fun);font-size:clamp(30px,5.4vmin,64px);
+  color:#fff;letter-spacing:.02em;
+}
+.endcard .ec-s{
+  font-family:var(--font-ui);font-size:14.5px;color:#9aa0a8;max-width:620px;line-height:1.8;
+}
+.endcard .ec-scene{
+  width:min(560px,84%);aspect-ratio:16/9;border:1px solid #22262c;border-radius:6px;
+  overflow:hidden;position:relative;background:#050506;
+}
+.endcard .ec-scene svg{width:100%;height:100%}
+.endcard .ec-btns{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;justify-content:center}
+.endcard .ec-btns button{
+  padding:11px 28px;font-size:13.5px;font-weight:600;border-radius:9px;
+  background:#1c2026;color:#e8e8ee;border:1px solid #3a4048;
+}
+.endcard .ec-btns button:hover{background:#2a3038;border-color:#5a6470}
+.endcard .ec-btns button.primary{background:#d81b7a;border-color:#d81b7a;color:#fff}
+.endcard .ec-btns button.primary:hover{background:#b81667}
+
+/* ══════════════ 加载 / 编译 ══════════════ */
+.compile{
+  position:absolute;inset:0;background:#05060a;z-index:45;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  font-family:var(--font-mono);
+}
+.compile .cp-log{
+  width:min(680px,84%);height:250px;overflow:hidden;
+  font-size:12px;color:#5fd08a;line-height:1.65;white-space:pre-wrap;
+}
+.compile .cp-log .warn{color:#e0c060}
+.compile .cp-log .err{color:#e05050}
+.compile .cp-title{font-size:15px;color:#c8d0d8;letter-spacing:.08em}
+.compile .cp-bar{width:min(680px,84%);height:7px;background:#151a22;border-radius:4px;overflow:hidden}
+.compile .cp-bar > i{display:block;height:100%;width:0;
+  background:linear-gradient(90deg,#2f7fd0,#7ec8ff);transition:width .2s}
+
+/* ══════════════ 授权界面 ══════════════ */
+.grant{
+  position:absolute;inset:0;background:rgba(0,0,0,.86);z-index:46;
+  display:flex;align-items:center;justify-content:center;padding:30px;
+}
+.grant-card{
+  width:min(560px,92%);background:#0c0f14;border:1px solid #2a3038;border-radius:10px;
+  overflow:hidden;font-family:var(--font-mono);
+}
+.grant-card .gc-h{
+  padding:13px 18px;background:#151a22;border-bottom:1px solid #2a3038;
+  color:#c8d0d8;font-size:13px;display:flex;align-items:center;gap:10px;
+}
+.grant-card .gc-b{padding:20px 22px;color:#a8b2be;font-size:12.5px;line-height:1.9}
+.grant-card .gc-b .cmd{color:#5fd08a;font-weight:700}
+.grant-card .gc-f{padding:14px 18px;background:#0a0d11;display:flex;
+  justify-content:flex-end;gap:10px;border-top:1px solid #2a3038}
+.grant-card .gc-f button{
+  padding:8px 20px;font-size:12.5px;border-radius:6px;font-family:var(--font-mono);
+  background:#1c2026;color:#c8d0d8;border:1px solid #3a4048;
+}
+.grant-card .gc-f button.allow{background:#7a0f16;border-color:#a02028;color:#ffd8d8}
+.grant-card .gc-f button.allow:hover{background:#a0141c}
