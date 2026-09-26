@@ -252,7 +252,9 @@ async function auditClickable(cdp, selector, label) {
     await sleep(2500);
 
     let netOK = false, guard = 0;
-    while (guard++ < 60) {
+    /* act_net 内部本身有多段"等玩家 / 超时兜底"（9s+8s+9s），总共约 35~40 秒。
+       这里给足预算，别把它当成产品回归。 */
+    while (guard++ < 180) {
       /* 每一步都用真实鼠标点掉挡住流程的弹窗 */
       const btn = await cdp.ev(`(function(){
         var cands = [
@@ -278,14 +280,100 @@ async function auditClickable(cdp, selector, label) {
         const ic = await centerOf(cdp, '[data-icon-id="internet"]');
         if (ic) await realClick(cdp, ic.x, ic.y);
       }
-      await sleep(700);
+      await sleep(450);
       const done = await cdp.ev('K.State.flag("didNet")');
       if (done) { netOK = true; break; }
     }
     assert(netOK, '仅靠真实鼠标点击即可走完第二幕（didNet）',
-      netOK ? '已到达' : '60 轮后仍未完成');
+      netOK ? '已到达' : guard + ' 轮后仍未完成');
     const netErr = await cdp.ev('window.__netErr');
     if (netErr) bad('第二幕内部异常', String(netErr).slice(0, 200));
+
+    /* ── 9b. Web World 地图解锁与点击（回归点） ── */
+    console.log('\n── 9b. Web World 地图 ──');
+    /* act_net 在 didNet 之后还有收尾（约 900ms 后会把浏览器导航回官网），
+       必须等它彻底跑完，否则会把下面刚渲染的地图覆盖掉。 */
+    await sleep(2800);
+    await cdp.ev(`(function(){
+      K.WM.closeAll();
+      K.State.reset();
+      K.State.setFlag('didBoot');
+      K.State.userName = 'Player';
+      K.Bus.__arrived = null;
+      K.Bus.on('webworld:arrive', function(id){ K.Bus.__arrived = id; });
+      K.Apps.browser('kinitopet.com/webworld');
+      return true;
+    })()`);
+    await sleep(1200);
+
+    const locks0 = await cdp.ev(`(function(){
+      var out = {};
+      Array.prototype.forEach.call(document.querySelectorAll('.ww-spot'), function(s){
+        var name = s.querySelector('.wws-name').textContent.trim();
+        out[name] = s.classList.contains('locked');
+      });
+      return out;
+    })()`);
+    assert(locks0 && locks0["Sam's House"] === false,
+      '未通关时 Sam 的房子可进入', JSON.stringify(locks0));
+    assert(locks0 && locks0["Jade's House"] === true,
+      '未通关时 Jade 的房子是锁的', JSON.stringify(locks0));
+
+    /* 真实点击 Sam 的房子 */
+    const samSpot = await centerOf(cdp, '.ww-spot:not(.locked)');
+    assert(!!samSpot, '存在可点击的地点');
+    if (samSpot) {
+      await realClick(cdp, samSpot.x, samSpot.y);
+      await sleep(1200);
+      const arrived = await cdp.ev('K.Bus.__arrived');
+      assert(arrived === 'sam', '真实点击 Sam 的房子后触发 webworld:arrive', arrived);
+    }
+
+    /* 通关 Sam 后 Jade 解锁 */
+    const locks1 = await cdp.ev(`(function(){
+      K.State.setFlag('didSam');
+      K.Apps.browser('kinitopet.com/webworld');
+      return true;
+    })()`);
+    await sleep(1000);
+    const l1 = await cdp.ev(`(function(){
+      var out = {};
+      Array.prototype.forEach.call(document.querySelectorAll('.ww-spot'), function(s){
+        out[s.querySelector('.wws-name').textContent.trim()] = s.classList.contains('locked');
+      });
+      return out;
+    })()`);
+    assert(l1 && l1["Jade's House"] === false, '完成 Sam 后 Jade 的房子解锁', JSON.stringify(l1));
+
+    /* 通关 Jade 后树屋解锁 */
+    await cdp.ev(`(function(){
+      K.State.setFlag('didJade');
+      K.Apps.browser('kinitopet.com/webworld');
+      return true;
+    })()`);
+    await sleep(1000);
+    const l2 = await cdp.ev(`(function(){
+      var out = {};
+      Array.prototype.forEach.call(document.querySelectorAll('.ww-spot'), function(s){
+        out[s.querySelector('.wws-name').textContent.trim()] = s.classList.contains('locked');
+      });
+      return out;
+    })()`);
+    assert(l2 && l2['Tree House'] === false, '完成 Jade 后树屋解锁', JSON.stringify(l2));
+
+    /* 地图上不该有"锁着但提示文案为空"的地点 */
+    const hintAudit = await cdp.ev(`(function(){
+      var bad = [];
+      Array.prototype.forEach.call(document.querySelectorAll('.ww-spot.locked'), function(s){
+        if (!s.classList.contains('locked')) return;
+        bad.push(s.querySelector('.wws-name').textContent.trim());
+      });
+      return bad;
+    })()`);
+    ok('当前锁定地点', JSON.stringify(hintAudit));
+
+    await cdp.ev('K.WM.closeAll()');
+    await sleep(400);
 
     /* ── 10. 全程异常 ── */
     console.log('\n── 10. 运行时异常 ──');

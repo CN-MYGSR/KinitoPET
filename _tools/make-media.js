@@ -124,11 +124,12 @@ const COVER_HTML = `<!DOCTYPE html>
       name: 'shot-2-webworld.png',
       setup: `(function(){
         K.WM.closeAll();
-        K.State.setFlag('metSam'); K.State.setFlag('metJade');
+        K.Kinito.despawn(true);
+        K.State.setFlag('didSam'); K.State.setFlag('didJade');
         K.State.favColorHex = '#f9c2dc';
         K.Apps.browser('kinitopet.com/webworld');
         return true;
-      })()`, wait: 1400
+      })()`, wait: 1500
     },
     {
       name: 'shot-3-readyrepair.png',

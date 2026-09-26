@@ -389,13 +389,24 @@ K.Browser = {
     map.appendChild(avatar);
     this._avatarEl = avatar;
 
+    /* 解锁顺序：
+       Sam 的房子是第一个目标，任何时候都能进；
+       帮完 Sam（didSam）才开 Jade 的房子；
+       帮完 Jade（didJade）才开树屋。
+       注意：flag 名必须和导演里 setFlag 的一致（didSam / didJade），
+       写错名字会让 locked 恒为 true，整张地图全部点不动。 */
+    var didSam  = K.State.flag('didSam');
+    var didJade = K.State.flag('didJade');
+
     var spots = [
       { id: 'sam',   label: "Sam's House",    kind: 'brown',  left: '24%', top: '84%',
-        locked: !K.State.flag('metSam') },
+        locked: false, lockHint: '' },
       { id: 'jade',  label: "Jade's House",   kind: 'purple', left: '54%', top: '94%',
-        locked: !K.State.flag('metSam') },
+        locked: !didSam,
+        lockHint: '先去 Sam 家把他的房子收拾好。' },
       { id: 'tree',  label: 'Tree House',     kind: 'tree',   left: '82%', top: '78%',
-        locked: !K.State.flag('metJade') }
+        locked: !didJade,
+        lockHint: 'Jade 还在等你。先帮她把玩具修完。' }
     ];
 
     spots.forEach(function(sp){
@@ -406,7 +417,7 @@ K.Browser = {
       s.addEventListener('click', function(){
         if(sp.locked){
           K.Audio.error();
-          K.Desktop.toast('那个地方现在还去不了。先去找 Sam 吧。', '提示');
+          K.Desktop.toast(sp.lockHint || '那个地方现在还去不了。', '提示');
           return;
         }
         K.Audio.click();

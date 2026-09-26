@@ -40,6 +40,32 @@ K.Director = {
     });
   },
 
+  /* 等待事件，超时则自动兜底继续。
+     用途：任何"等玩家点某个 UI 元素"的地方都不该把整局锁死 ——
+     已经出现过两次因为 UI 点不动导致流程永久卡住的情况。 */
+  waitForOr(ev, filter, timeoutMs, fallbackValue, label){
+    var self = this;
+    return new Promise(function(resolve){
+      var done = false;
+      var off = K.Bus.on(ev, function(payload){
+        if(filter && !filter(payload)) return;
+        if(done) return;
+        done = true;
+        off(); clearTimeout(timer);
+        resolve(payload);
+      });
+      var timer = setTimeout(function(){
+        if(done) return;
+        done = true;
+        off();
+        console.warn('[导演] 等待「' + (label || ev) + '」超时 ' + timeoutMs +
+                     'ms，自动继续。这通常意味着某个 UI 元素点不动。');
+        K.Desktop.toast('（等太久了，帮你跳过了。）', '提示');
+        resolve(fallbackValue === undefined ? true : fallbackValue);
+      }, timeoutMs);
+    });
+  },
+
   /* 请求全屏（失败也不影响） */
   async requestFullscreen(){
     try{
@@ -554,8 +580,9 @@ K.Director = {
     K.Bus.emit('webworld:rendered');
     K.Bus.emit('objective');
 
-    /* 等玩家点 Sam 的房子 */
-    await this.waitFor('webworld:arrive', function(id){ return id === 'sam'; });
+    /* 等玩家点 Sam 的房子（25 秒没点就自动兜底，不让整局卡死） */
+    await this.waitForOr('webworld:arrive', function(id){ return id === 'sam'; },
+      25000, 'sam', '点击 Sam 的房子');
   },
 
   /* ══════════════════════════════════════════════════════════
@@ -627,7 +654,8 @@ K.Director = {
     await K.Kinito.say('我们继续吧。\n\nJade 还在等。', { autoAdvance: 2400 });
 
     K.Bus.emit('webworld:rendered');
-    await this.waitFor('webworld:arrive', function(id){ return id === 'jade'; });
+    await this.waitForOr('webworld:arrive', function(id){ return id === 'jade'; },
+      25000, 'jade', '点击 Jade 的房子');
   },
 
   /* ══════════════════════════════════════════════════════════
